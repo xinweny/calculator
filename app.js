@@ -79,6 +79,8 @@
   function addNumber(event) {
     updateStates();
     app.display.textContent += event.target.textContent;
+    
+    app.deleteButton.removeAttribute('disabled');
   }
 
   function getOperator(event) {
@@ -121,6 +123,8 @@
       app.decimalButton.removeAttribute('disabled');
       state.justEvaluated = true;
       state.prevNumGiven = true;
+
+      app.deleteButton.setAttribute('disabled', 'true');
     }
   }
 
@@ -136,6 +140,7 @@
       
       unclickOperatorButtons();
       app.decimalButton.removeAttribute('disabled');
+      app.deleteButton.removeAttribute('disabled');
   }
 
   function addDecimal(event) {
