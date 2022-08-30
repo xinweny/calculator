@@ -27,3 +27,17 @@ function operate(operator, a, b) {
       return divide(a, b);
   }
 }
+
+function displayCharacters() {
+  const buttons = document.querySelectorAll('.number-button, .operator-button');
+  for (let button of buttons) {
+    button.addEventListener('click', () => display.textContent += button.textContent);
+  }
+}
+
+function main() {
+  const display = document.getElementById('display');
+  displayCharacters();
+}
+
+main();
