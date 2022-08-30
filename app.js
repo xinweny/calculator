@@ -6,7 +6,8 @@
     operatorButtons: document.querySelectorAll('.operator-button'),
     evalButton: document.querySelector('.evaluate-button'),
     clearButton: document.querySelector('.clear-button'),
-    decimalButton: document.querySelector('.decimal-button')
+    decimalButton: document.querySelector('.decimal-button'),
+    deleteButton: document.querySelector('.delete-button')
   }
 
   const state = {
@@ -72,23 +73,10 @@
     }
   }
 
-  function appendChar(char) {
-    if (state.operator) {
-      if (state.firstNum === '') state.firstNum = '0';
-      state.secondNum += char;
-      state.prevNumGiven = false;
-    } else {
-      state.firstNum += char;
-      state.prevNumGiven = true;
-    }
-
-    app.display.textContent += char;
-  }
-
   // Callback functions
   function addNumber(event) {
     checkStates();
-    appendChar(event.target.textContent);
+    app.display.textContent += event.target.textContent;
   }
 
   function getOperator(event) {
@@ -98,14 +86,20 @@
 
     const operator = event.target.textContent;
     state.operator = operator;
+
+    if (state.prevNumGiven) {
+      state.secondNum = app.display.textContent;
+    } else {
+      state.firstNum = app.display.textContent;
+    }
     state.prevNumGiven = true;
-    
+
     app.decimalButton.removeAttribute('disabled');
   }
 
   function evaluateExpression(event) {
-    console.log({firstNum: state.firstNum,
-    secondNum: state.secondNum})
+    if (state.operator) state.secondNum = app.display.textContent;
+
     if (state.secondNum === '0' && state.operator == '/') {
       app.display.textContent = 'ERROR';
       state.zeroError = true;
@@ -144,8 +138,17 @@
 
   function addDecimal(event) {
     checkStates();
-    appendChar(app.display.textContent === '' ? '0.' : '.');
+    app.display.textContent += (app.display.textContent === '') ? '0.' : '.';
     event.target.setAttribute('disabled', 'true');
+  }
+
+  function deleteChar(event) {
+    const toDelete = app.display.textContent.slice(-1);
+    app.display.textContent = app.display.textContent.slice(0, -1);
+
+    if (toDelete === '.') {
+      app.decimalButton.removeAttribute('disabled');
+    }
   }
 
   //// EVENT LISTENERS ////
@@ -167,4 +170,6 @@
   // Apply decimal
   app.decimalButton.addEventListener('click', addDecimal);
 
+  // Delete a character at a time
+  app.deleteButton.addEventListener('click', deleteChar);
 })();
