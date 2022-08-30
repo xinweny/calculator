@@ -11,7 +11,8 @@
   const state = {
     firstNum: '',
     secondNum: '',
-    operator: null
+    operator: null,
+    prevNumGiven: false
   };
 
   //// FUNCTIONS ////
@@ -54,25 +55,27 @@
 
   // Callback functions
   function displayCharacter(event) {
+    if (state.operator && state.prevNumGiven) {
+      app.display.textContent = '';
+      state.prevNumGiven = false;
+    }
+
     app.display.textContent += event.target.textContent;
 
     if (state.operator) {
       state.secondNum += event.target.textContent;
+      state.prevNumGiven = false;
     } else {
       state.firstNum += event.target.textContent;
+      state.prevNumGiven = true;
     }
   }
 
   function getOperator(event) {
     unclickOperatorButtons();
 
-    if (state.operator) {
-      state.operator = null;
-      event.target.classList.remove('clicked');
-    } else {
-      state.operator = event.target.textContent;
-      event.target.classList.add('clicked');
-    }
+    state.operator = event.target.textContent;
+    event.target.classList.add('clicked');
   }
 
   function evaluateExpression(event) {
@@ -87,6 +90,7 @@
 
       app.display.textContent = result;
       unclickOperatorButtons();
+      state.prevNumGiven = true;
     }
   }
 
