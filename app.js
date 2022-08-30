@@ -99,6 +99,8 @@
     const operator = event.target.textContent;
     state.operator = operator;
     state.prevNumGiven = true;
+    
+    app.decimalButton.removeAttribute('disabled');
   }
 
   function evaluateExpression(event) {
@@ -120,6 +122,7 @@
       app.display.textContent = result;
 
       unclickOperatorButtons();
+      app.decimalButton.removeAttribute('disabled');
       state.justEvaluated = true;
       state.prevNumGiven = true;
     }
@@ -136,11 +139,13 @@
       app.display.textContent = '';
       
       unclickOperatorButtons();
+      app.decimalButton.removeAttribute('disabled');
   }
 
   function addDecimal(event) {
     checkStates();
     appendChar(app.display.textContent === '' ? '0.' : '.');
+    event.target.setAttribute('disabled', 'true');
   }
 
   //// EVENT LISTENERS ////
@@ -161,4 +166,5 @@
 
   // Apply decimal
   app.decimalButton.addEventListener('click', addDecimal);
+
 })();
