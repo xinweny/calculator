@@ -105,7 +105,11 @@
       app.display.textContent = 'ERROR';
       state.zeroError = true;
     } else if (state.firstNum != '' && state.secondNum != '' && state.operator) {
-      const result = operate(state.operator, Number(state.firstNum), Number(state.secondNum));
+      let result = operate(state.operator, Number(state.firstNum), Number(state.secondNum));
+
+      if (result % 1 != 0) {
+        result = parseFloat(result.toFixed(9));
+      }
 
       state.firstNum = result;
       state.operator = null;
