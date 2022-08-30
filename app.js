@@ -57,16 +57,19 @@
   }
 
   function checkStates() {
-    if (state.justEvaluated || state.zeroError) {
+    if (state.zeroError) {
       app.clearButton.click();
       state.zeroError = false;
+    } else if (state.justEvaluated && !(state.operator)) {
+      app.clearButton.click();
       state.justEvaluated = false;
-    } else if (!state.justEvaluated) {
-      app.display.textContent = '';
-    } else if (state.operator && state.prevNumGiven) {
+    }
+
+
+    if (state.operator && state.prevNumGiven) {
       app.display.textContent = '';
       state.prevNumGiven = false;
-    } 
+    }
   }
 
   function appendChar(char) {
@@ -95,7 +98,7 @@
 
     const operator = event.target.textContent;
     state.operator = operator;
-    state.justEvaluated = false;
+    state.prevNumGiven = true;
   }
 
   function evaluateExpression(event) {
@@ -118,6 +121,7 @@
 
       unclickOperatorButtons();
       state.justEvaluated = true;
+      state.prevNumGiven = true;
     }
   }
 
