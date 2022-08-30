@@ -1,6 +1,15 @@
 (function() {
   // Shared variables
-  const display = document.getElementById('display');
+  const app = {
+    display: document.getElementById('display'),
+    numButtons: document.querySelectorAll('.number-button'),
+    operatorButtons: document.querySelectorAll('.operator-button'),
+    evalButton: document.querySelector('.evaluate-button')
+  }
+  const state = {
+    firstNum: '',
+    operator: null
+  };
 
   // Functions
   function add(a, b) {
@@ -32,24 +41,14 @@
     }
   }
 
-  function displayCharacters() {
-    const buttons = document.querySelectorAll('.number-button, .operator-button');
-
-    for (let button of buttons) {
-      button.addEventListener('click', () => {
-        display.textContent += button.textContent
-
-        if (button.classList.contains('.number-button')) params.firstNum += button.textContent;
-      });
-    }
+  function displayCharacter(event) {
+    display.textContent += event.target.textContent;
+    state.firstNum += event.target.textContent;
   }
 
-  function evaluateExpression() {
-    const evalButton = document.querySelector('.evaluate-button');
-    evalButton.addEventListener('click', () => {
-
-    });
+  // Event listeners
+  for (let button of app.numButtons) {
+    button.addEventListener('click', displayCharacter);
   }
 
-  displayCharacters();
 })();
