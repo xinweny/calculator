@@ -13,7 +13,8 @@
     secondNum: '',
     operator: null,
     prevNumGiven: false,
-    zeroError: false
+    zeroError: false,
+    justEvaluated: false,
   };
 
   //// FUNCTIONS ////
@@ -55,9 +56,10 @@
   }
 
   function checkStates() {
-    if (state.zeroError) {
+    if (state.justEvaluated || state.zeroError) {
       app.clearButton.click();
       state.zeroError = false;
+      state.justEvaluated = false;
     }
 
     if (state.operator && state.prevNumGiven) {
@@ -84,7 +86,7 @@
 
   function getOperator(event) {
     for (let button of app.operatorButtons) {
-      button.classList[event.target == button ? 'toggle' : 'remove']('clicked')
+      button.classList[event.target == button ? 'add' : 'remove']('clicked')
     }
 
     const operator = event.target.textContent;
@@ -104,8 +106,9 @@
       state.operator = null;
       state.secondNum = '';
       app.numDisplay.textContent = result;
+
       unclickOperatorButtons();
-      state.prevNumGiven = true;
+      state.justEvaluated = true;
     }
   }
 
@@ -114,6 +117,7 @@
       state.operator = null;
       state.secondNum = '';
       state.prevNumGiven = false;
+      state.justEvaluated = false;
       state.zeroError = false;
 
       app.numDisplay.textContent = '';
