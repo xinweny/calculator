@@ -17,6 +17,7 @@
     prevNumGiven: false,
     zeroError: false,
     justEvaluated: false,
+    keyStrokes: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', '*', '/', '=', 'C', 'c', 'Backspace', 'Enter']
   };
 
   //// FUNCTIONS ////
@@ -57,7 +58,7 @@
     }
   }
 
-  function checkStates() {
+  function updateStates() {
     if (state.zeroError) {
       app.clearButton.click();
       state.zeroError = false;
@@ -70,12 +71,13 @@
     if (state.operator && state.prevNumGiven) {
       app.display.textContent = '';
       state.prevNumGiven = false;
+      state.justEvaluated = false;
     }
   }
 
   // Callback functions
   function addNumber(event) {
-    checkStates();
+    updateStates();
     app.display.textContent += event.target.textContent;
   }
 
@@ -137,7 +139,7 @@
   }
 
   function addDecimal(event) {
-    checkStates();
+    updateStates();
     app.display.textContent += (app.display.textContent === '') ? '0.' : '.';
     event.target.setAttribute('disabled', 'true');
   }
@@ -148,6 +150,22 @@
 
     if (toDelete === '.') {
       app.decimalButton.removeAttribute('disabled');
+    }
+  }
+
+  function clickButton(event) {
+    if (state.keyStrokes.includes(event.key)) {
+      let key = '';
+
+      switch(event.key) {
+        case 'c':
+          key = 'C'; break;
+        case 'Enter':
+          key = '='; break;
+        default:
+          key = event.key;
+      }
+      document.querySelector(`[data-key="${key}"]`).click();
     }
   }
 
@@ -172,4 +190,7 @@
 
   // Delete a character at a time
   app.deleteButton.addEventListener('click', deleteChar);
+
+  // Add keyboard support
+  document.addEventListener('keydown', clickButton);
 })();
