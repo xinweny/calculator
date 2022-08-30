@@ -45,7 +45,12 @@
     }
   }
 
-  // Helper functions
+  // Helper buttons
+  function unclickOperatorButtons() {
+    for (button of app.operatorButtons) {
+      if (button.classList.contains('clicked')) button.classList.remove('clicked');
+    }
+  }
 
   // Callback functions
   function displayCharacter(event) {
@@ -59,7 +64,15 @@
   }
 
   function getOperator(event) {
-    state.operator = event.target.textContent;
+    unclickOperatorButtons();
+
+    if (state.operator) {
+      state.operator = null;
+      event.target.classList.remove('clicked');
+    } else {
+      state.operator = event.target.textContent;
+      event.target.classList.add('clicked');
+    }
   }
 
   function evaluateExpression(event) {
@@ -73,7 +86,16 @@
       state.secondNum = '';
 
       app.display.textContent = result;
+      unclickOperatorButtons();
     }
+  }
+
+  function resetValues(event) {
+      state.firstNum = '';
+      state.operator = null;
+      state.secondNum = '';
+      app.display.textContent = '';
+      unclickOperatorButtons();
   }
 
   //// EVENT LISTENERS ////
@@ -89,4 +111,6 @@
   // Evaluate pair of numbers with the selected operator
   app.evalButton.addEventListener('click', evaluateExpression);
 
+  // Clear all state variables and display
+  app.clearButton.addEventListener('click', resetValues);
 })();
