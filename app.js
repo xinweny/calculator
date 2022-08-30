@@ -4,7 +4,8 @@
     display: document.getElementById('display'),
     numButtons: document.querySelectorAll('.number-button'),
     operatorButtons: document.querySelectorAll('.operator-button'),
-    evalButton: document.querySelector('.evaluate-button')
+    evalButton: document.querySelector('.evaluate-button'),
+    clearButton: document.querySelector('.clear-button')
   }
 
   const state = {
@@ -44,6 +45,8 @@
     }
   }
 
+  // Helper functions
+
   // Callback functions
   function displayCharacter(event) {
     app.display.textContent += event.target.textContent;
@@ -61,7 +64,14 @@
 
   function evaluateExpression(event) {
     if (state.firstNum != '' && state.secondNum != '' && state.operator) {
-      const result = operate(state.operator, state.firstNum, state.secondNum);
+      const result = operate(state.operator, 
+        Number(state.firstNum), 
+        Number(state.secondNum));
+
+      state.firstNum = result;
+      state.operator = null;
+      state.secondNum = '';
+
       app.display.textContent = result;
     }
   }
