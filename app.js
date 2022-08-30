@@ -1,17 +1,20 @@
 (function() {
-  // Shared variables
+  //// SHARED ////
   const app = {
     display: document.getElementById('display'),
     numButtons: document.querySelectorAll('.number-button'),
     operatorButtons: document.querySelectorAll('.operator-button'),
     evalButton: document.querySelector('.evaluate-button')
   }
+
   const state = {
     firstNum: '',
+    secondNum: '',
     operator: null
   };
 
-  // Functions
+  //// FUNCTIONS ////
+  // Basic functions
   function add(a, b) {
     return a + b;
   }
@@ -41,14 +44,39 @@
     }
   }
 
+  // Callback functions
   function displayCharacter(event) {
-    display.textContent += event.target.textContent;
-    state.firstNum += event.target.textContent;
+    app.display.textContent += event.target.textContent;
+
+    if (state.operator) {
+      state.secondNum += event.target.textContent;
+    } else {
+      state.firstNum += event.target.textContent;
+    }
   }
 
-  // Event listeners
+  function getOperator(event) {
+    state.operator = event.target.textContent;
+  }
+
+  function evaluateExpression(event) {
+    if (state.firstNum != '' && state.secondNum != '' && state.operator) {
+      const result = operate(state.operator, state.firstNum, state.secondNum);
+      app.display.textContent = result;
+    }
+  }
+
+  //// EVENT LISTENERS ////
+  // Display digit on calculator screen when number button is clicked
   for (let button of app.numButtons) {
     button.addEventListener('click', displayCharacter);
   }
+
+  // Store the operator selected
+  for (let button of app.operatorButtons) {
+    button.addEventListener('click', getOperator);
+  }
+  // Evaluate pair of numbers with the selected operator
+  app.evalButton.addEventListener('click', evaluateExpression);
 
 })();
