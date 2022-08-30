@@ -1,7 +1,7 @@
 (function() {
   //// SHARED ////
   const app = {
-    display: document.getElementById('display'),
+    numDisplay: document.getElementById('number-display'),
     numButtons: document.querySelectorAll('.number-button'),
     operatorButtons: document.querySelectorAll('.operator-button'),
     evalButton: document.querySelector('.evaluate-button'),
@@ -12,7 +12,8 @@
     firstNum: '',
     secondNum: '',
     operator: null,
-    prevNumGiven: false
+    prevNumGiven: false,
+    zeroError: false
   };
 
   //// FUNCTIONS ////
@@ -46,23 +47,33 @@
     }
   }
 
-  // Helper buttons
+  // Helper functions
   function unclickOperatorButtons() {
     for (button of app.operatorButtons) {
       if (button.classList.contains('clicked')) button.classList.remove('clicked');
     }
   }
 
-  // Callback functions
-  function displayCharacter(event) {
-    if (state.operator && state.prevNumGiven) {
-      app.display.textContent = '';
-      state.prevNumGiven = false;
+  function checkStates() {
+    if (state.zeroError) {
+      app.clearButton.click();
+      state.zeroError = false;
     }
 
-    app.display.textContent += event.target.textContent;
+    if (state.operator && state.prevNumGiven) {
+      app.numDisplay.textContent = '';
+      state.prevNumGiven = false;
+    }
+  }
+
+  // Callback functions
+  function getNumber(event) {
+    checkStates();
+
+    app.numDisplay.textContent += event.target.textContent;
 
     if (state.operator) {
+      if (state.firstNum === '') state.firstNum = '0';
       state.secondNum += event.target.textContent;
       state.prevNumGiven = false;
     } else {
@@ -72,14 +83,19 @@
   }
 
   function getOperator(event) {
-    unclickOperatorButtons();
+    for (let button of app.operatorButtons) {
+      button.classList[event.target == button ? 'toggle' : 'remove']('clicked')
+    }
 
-    state.operator = event.target.textContent;
-    event.target.classList.add('clicked');
+    const operator = event.target.textContent;
+    state.operator = operator;
   }
 
   function evaluateExpression(event) {
-    if (state.firstNum != '' && state.secondNum != '' && state.operator) {
+    if (state.secondNum === '0' && state.operator == '/') {
+      app.numDisplay.textContent = 'ERROR';
+      state.zeroError = true;
+    } else if (state.firstNum != '' && state.secondNum != '' && state.operator) {
       const result = operate(state.operator, 
         Number(state.firstNum), 
         Number(state.secondNum));
@@ -87,8 +103,7 @@
       state.firstNum = result;
       state.operator = null;
       state.secondNum = '';
-
-      app.display.textContent = result;
+      app.numDisplay.textContent = result;
       unclickOperatorButtons();
       state.prevNumGiven = true;
     }
@@ -98,14 +113,18 @@
       state.firstNum = '';
       state.operator = null;
       state.secondNum = '';
-      app.display.textContent = '';
+      state.prevNumGiven = false;
+      state.zeroError = false;
+
+      app.numDisplay.textContent = '';
+      
       unclickOperatorButtons();
   }
 
   //// EVENT LISTENERS ////
   // Display digit on calculator screen when number button is clicked
   for (let button of app.numButtons) {
-    button.addEventListener('click', displayCharacter);
+    button.addEventListener('click', getNumber);
   }
 
   // Store the operator selected
