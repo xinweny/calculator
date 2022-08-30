@@ -1,3 +1,67 @@
+@font-face {
+  font-family: digital7;
+  src: url('./assets/digital-7.ttf')
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+button {
+  display: block;
+  height: 60px;
+  width: 60px;
+  border-radius: 16px;
+  font-size: 24px;
+}
+
+h1 {
+  display: block;
+  margin: 0;
+}
+
 .clicked {
-    color: red;
+  color: red;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.calculator {
+  border: solid;
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-gap: 8px;
+  padding-top: 16px;
+}
+
+.display {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  border: solid;
+  border-radius: 12px;
+}
+
+#number-display {
+  font-family: digital7;
+  font-size: 48px;
+}
+
+.footer {
+  text-align: center;
 }
