@@ -1,11 +1,12 @@
 (function() {
   //// SHARED ////
   const app = {
-    numDisplay: document.getElementById('number-display'),
+    display: document.getElementById('number-display'),
     numButtons: document.querySelectorAll('.number-button'),
     operatorButtons: document.querySelectorAll('.operator-button'),
     evalButton: document.querySelector('.evaluate-button'),
-    clearButton: document.querySelector('.clear-button')
+    clearButton: document.querySelector('.clear-button'),
+    decimalButton: document.querySelector('.decimal-button')
   }
 
   const state = {
@@ -60,28 +61,31 @@
       app.clearButton.click();
       state.zeroError = false;
       state.justEvaluated = false;
+    } else if (!state.justEvaluated) {
+      app.display.textContent = '';
+    } else if (state.operator && state.prevNumGiven) {
+      app.display.textContent = '';
+      state.prevNumGiven = false;
+    } 
+  }
+
+  function appendChar(char) {
+    if (state.operator) {
+      if (state.firstNum === '') state.firstNum = '0';
+      state.secondNum += char;
+      state.prevNumGiven = false;
+    } else {
+      state.firstNum += char;
+      state.prevNumGiven = true;
     }
 
-    if (state.operator && state.prevNumGiven) {
-      app.numDisplay.textContent = '';
-      state.prevNumGiven = false;
-    }
+    app.display.textContent += char;
   }
 
   // Callback functions
-  function getNumber(event) {
+  function addNumber(event) {
     checkStates();
-
-    app.numDisplay.textContent += event.target.textContent;
-
-    if (state.operator) {
-      if (state.firstNum === '') state.firstNum = '0';
-      state.secondNum += event.target.textContent;
-      state.prevNumGiven = false;
-    } else {
-      state.firstNum += event.target.textContent;
-      state.prevNumGiven = true;
-    }
+    appendChar(event.target.textContent);
   }
 
   function getOperator(event) {
@@ -91,21 +95,22 @@
 
     const operator = event.target.textContent;
     state.operator = operator;
+    state.justEvaluated = false;
   }
 
   function evaluateExpression(event) {
+    console.log({firstNum: state.firstNum,
+    secondNum: state.secondNum})
     if (state.secondNum === '0' && state.operator == '/') {
-      app.numDisplay.textContent = 'ERROR';
+      app.display.textContent = 'ERROR';
       state.zeroError = true;
     } else if (state.firstNum != '' && state.secondNum != '' && state.operator) {
-      const result = operate(state.operator, 
-        Number(state.firstNum), 
-        Number(state.secondNum));
+      const result = operate(state.operator, Number(state.firstNum), Number(state.secondNum));
 
       state.firstNum = result;
       state.operator = null;
       state.secondNum = '';
-      app.numDisplay.textContent = result;
+      app.display.textContent = result;
 
       unclickOperatorButtons();
       state.justEvaluated = true;
@@ -120,15 +125,20 @@
       state.justEvaluated = false;
       state.zeroError = false;
 
-      app.numDisplay.textContent = '';
+      app.display.textContent = '';
       
       unclickOperatorButtons();
+  }
+
+  function addDecimal(event) {
+    checkStates();
+    appendChar(app.display.textContent === '' ? '0.' : '.');
   }
 
   //// EVENT LISTENERS ////
   // Display digit on calculator screen when number button is clicked
   for (let button of app.numButtons) {
-    button.addEventListener('click', getNumber);
+    button.addEventListener('click', addNumber);
   }
 
   // Store the operator selected
@@ -140,4 +150,7 @@
 
   // Clear all state variables and display
   app.clearButton.addEventListener('click', resetValues);
+
+  // Apply decimal
+  app.decimalButton.addEventListener('click', addDecimal);
 })();
