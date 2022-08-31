@@ -7,7 +7,8 @@
     evalButton: document.querySelector('.evaluate-button'),
     clearButton: document.querySelector('.clear-button'),
     decimalButton: document.querySelector('.decimal-button'),
-    deleteButton: document.querySelector('.delete-button')
+    deleteButton: document.querySelector('.delete-button'),
+    keyStrokes: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', '*', '/', '=', 'C', 'c', 'Backspace', 'Enter']
   }
 
   const state = {
@@ -16,8 +17,7 @@
     operator: null,
     prevNumGiven: false,
     zeroError: false,
-    justEvaluated: false,
-    keyStrokes: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', '*', '/', '=', 'C', 'c', 'Backspace', 'Enter']
+    justEvaluated: false
   };
 
   //// FUNCTIONS ////
@@ -164,7 +164,7 @@
   }
 
   function clickButton(event) {
-    if (state.keyStrokes.includes(event.key)) {
+    if (app.keyStrokes.includes(event.key)) {
       let key = '';
 
       switch(event.key) {
