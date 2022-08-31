@@ -29,7 +29,7 @@ h1 {
   margin: 0;
 }
 
-button.clicked {
+button:active, button.clicked {
   color: white;
   background-color: #A66CFF;
 }
