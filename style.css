@@ -8,14 +8,20 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: #dfe1fd;
+  padding: 0;
+  margin: 0;
 }
 
 button {
   display: block;
   height: 60px;
   width: 60px;
-  border-radius: 16px;
+  border-radius: 50%;
   font-size: 24px;
+  font-family: Calibri;
+  border: transparent;
+  color:black;
 }
 
 h1 {
@@ -24,7 +30,8 @@ h1 {
 }
 
 .clicked {
-  color: red;
+  color: white;
+  background-color: #A66CFF;
 }
 
 .content {
@@ -38,14 +45,20 @@ h1 {
   border: solid;
   padding: 16px;
   border-radius: 16px;
+  border-color: transparent;
+  background-color: #9C9EFE;
 }
 
 .buttons {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(5, 1fr);
   grid-gap: 8px;
   padding-top: 16px;
+}
+
+.button-row {
+  display: flex;
+  gap: 8px;
 }
 
 .display {
@@ -53,15 +66,53 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: right;
-  border: solid;
+  border: transparent;
+  background-color: #B1E1FF;
   border-radius: 12px;
+  padding: 8px;
 }
 
 #number-display {
   font-family: digital7;
-  font-size: 48px;
+  color: rgb(49, 49, 49);
+  font-size: 54px;
+}
+
+.operator-button {
+  background-color: #242F9B;
+  color: white;
+}
+
+.delete-button, .delete-button:disabled {
+  font-size: 20px;
+  background-color: #646FD4;
+  color: white;
+}
+
+.clear-button, .evaluate-button {
+  font-size: 20px;
+  width: 128px;
+  border-radius: 48px;
+  background-color: #646FD4;
+  color: white;
+}
+
+.evaluate-button {
+  font-size: 24px;
 }
 
 .footer {
   text-align: center;
+  background-color: #AFB4FF;
+  font-family: Calibri;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+a {
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
 }
