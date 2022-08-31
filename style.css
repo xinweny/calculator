@@ -77,6 +77,7 @@ button:active, button.clicked {
   font-family: digital7;
   color: rgb(49, 49, 49);
   font-size: 54px;
+  overflow: scroll;
 }
 
 .operator-button {
