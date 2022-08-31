@@ -108,12 +108,17 @@
       app.display.textContent = 'ERROR';
       state.zeroError = true;
     } else if (state.firstNum != '' && state.secondNum != '' && state.operator) {
-      let result = operate(state.operator, Number(state.firstNum), Number(state.secondNum));
+      let result = operate(state.operator, Number(state.firstNum), Number(state.secondNum)).toString();
 
       if (result % 1 != 0) {
-        result = parseFloat(result.toFixed(9));
+        result = Number(result).toFixed(5);
+      } else if (result.includes('e')) {
+        const i = result.indexOf('e');
+        const n = Number(result.slice(0, i));
+        result = n.toFixed(4) + result.slice(i);
       }
 
+      console.log(result);
       state.firstNum = result;
       state.operator = null;
       state.secondNum = '';

@@ -29,7 +29,7 @@ h1 {
   margin: 0;
 }
 
-.clicked {
+button.clicked {
   color: white;
   background-color: #A66CFF;
 }
@@ -63,13 +63,14 @@ h1 {
 
 .display {
   height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: right;
+  width: 248px;
   border: transparent;
   background-color: #B1E1FF;
   border-radius: 12px;
   padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
 }
 
 #number-display {
