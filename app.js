@@ -76,6 +76,21 @@
     }
   }
 
+  function getCorrespondingButton(event) {
+    let key = '';
+
+    switch(event.key) {
+      case 'c':
+        key = 'C'; break;
+      case 'Enter':
+        key = '='; break;
+      default:
+        key = event.key;
+    }
+
+    return document.querySelector(`[data-key="${key}"]`);
+  }
+
   // Callback functions
   function addNumber(event) {
     updateStates();
@@ -91,20 +106,15 @@
   }
 
   function getOperator(event) {
+    const operator = event.target.textContent;
+    state.operator = operator;
+    
+    if (!state.prevNumGiven) state.firstNum = app.display.textContent;
+    state.prevNumGiven = true;
+
     for (let button of app.operatorButtons) {
       button.classList[event.target == button ? 'add' : 'remove']('clicked')
     }
-
-    const operator = event.target.textContent;
-    state.operator = operator;
-
-    if (state.prevNumGiven) {
-      state.secondNum = app.display.textContent;
-    } else {
-      state.firstNum = app.display.textContent;
-    }
-    state.prevNumGiven = true;
-
     app.decimalButton.removeAttribute('disabled');
   }
 
@@ -173,17 +183,16 @@
 
   function clickButton(event) {
     if (app.keyStrokes.includes(event.key)) {
-      let key = '';
+      const buttonToClick = getCorrespondingButton(event);
+      buttonToClick.classList.add('clicked');
+      buttonToClick.click();
+    }
+  }
 
-      switch(event.key) {
-        case 'c':
-          key = 'C'; break;
-        case 'Enter':
-          key = '='; break;
-        default:
-          key = event.key;
-      }
-      document.querySelector(`[data-key="${key}"]`).click();
+  function unclickButton(event) {
+    if (app.keyStrokes.includes(event.key)) {
+      const buttonToClick = getCorrespondingButton(event);
+      buttonToClick.classList.remove('clicked');
     }
   }
 
@@ -211,4 +220,5 @@
 
   // Add keyboard support
   document.addEventListener('keydown', clickButton);
+  document.addEventListener('keyup', unclickButton);
 })();
