@@ -80,7 +80,7 @@
   function addNumber(event) {
     updateStates();
     if (state.firstNum === '' && state.operator) unclickOperatorButtons();
-    
+
     if (app.display.textContent === '0') {
       app.display.textContent = event.target.textContent;
     } else {
@@ -124,8 +124,6 @@
         const n = Number(result.slice(0, i));
         result = n.toFixed(app.decPlaces) + result.slice(i);
       }
-
-      console.log(result);
       state.firstNum = result;
       state.operator = null;
       state.secondNum = '';
@@ -141,7 +139,7 @@
   }
 
   function resetValues(event) {
-      state.firstNum = '';
+      state.firstNum = '0';
       state.operator = null;
       state.secondNum = '';
       state.prevNumGiven = false;
