@@ -19,7 +19,7 @@ button {
   width: 60px;
   border-radius: 50%;
   font-size: 24px;
-  font-family: font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   border: transparent;
   color:black;
 }
@@ -78,6 +78,7 @@ button:active, button.clicked {
   color: rgb(49, 49, 49);
   font-size: 54px;
   overflow: scroll;
+  line-height: normal;
 }
 
 .operator-button {
