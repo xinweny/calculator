@@ -192,7 +192,7 @@
   function unclickButton(event) {
     if (app.keyStrokes.includes(event.key)) {
       const buttonToClick = getCorrespondingButton(event);
-      buttonToClick.classList.remove('clicked');
+      if (!buttonToClick.classList.contains('operator-button')) buttonToClick.classList.remove('clicked');
     }
   }
 
