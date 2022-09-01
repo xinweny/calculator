@@ -78,6 +78,11 @@
   // Callback functions
   function addNumber(event) {
     updateStates();
+
+    if (state.firstNum === '' && state.operator) {
+      unclickOperatorButtons();
+    }
+
     app.display.textContent += event.target.textContent;
     
     app.deleteButton.removeAttribute('disabled');
