@@ -80,6 +80,7 @@
   function addNumber(event) {
     updateStates();
     if (state.firstNum === '' && state.operator) unclickOperatorButtons();
+    
     if (app.display.textContent === '0') {
       app.display.textContent = event.target.textContent;
     } else {
