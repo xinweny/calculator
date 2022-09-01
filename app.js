@@ -160,15 +160,14 @@
   }
 
   function deleteChar(event) {
-    if (app.display.textContent === '0') {
+    if (app.display.textContent.length == 1) {
+      app.display.textContent = '0';
       app.decimalButton.removeAttribute('disabled');
     } else {
       const toDelete = app.display.textContent.slice(-1);
       app.display.textContent = app.display.textContent.slice(0, -1);
 
-      if (toDelete === '.') {
-        app.decimalButton.removeAttribute('disabled');
-      }
+      if (toDelete === '.') app.decimalButton.removeAttribute('disabled');
     }
   }
 
