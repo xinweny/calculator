@@ -8,11 +8,12 @@
     clearButton: document.querySelector('.clear-button'),
     decimalButton: document.querySelector('.decimal-button'),
     deleteButton: document.querySelector('.delete-button'),
-    keyStrokes: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', '*', '/', '=', 'C', 'c', 'Backspace', 'Enter']
+    keyStrokes: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '+', '-', '*', '/', '=', 'C', 'c', 'Backspace', 'Enter'],
+    decPlaces: 7
   }
 
   const state = {
-    firstNum: '',
+    firstNum: '0',
     secondNum: '',
     operator: null,
     prevNumGiven: false,
@@ -78,12 +79,12 @@
   // Callback functions
   function addNumber(event) {
     updateStates();
-
-    if (state.firstNum === '' && state.operator) {
-      unclickOperatorButtons();
+    if (state.firstNum === '' && state.operator) unclickOperatorButtons();
+    if (app.display.textContent === '0') {
+      app.display.textContent = event.target.textContent;
+    } else {
+      app.display.textContent += event.target.textContent;
     }
-
-    app.display.textContent += event.target.textContent;
     
     app.deleteButton.removeAttribute('disabled');
   }
@@ -116,11 +117,11 @@
       let result = operate(state.operator, Number(state.firstNum), Number(state.secondNum)).toString();
 
       if (result % 1 != 0) {
-        result = Number(result).toFixed(5);
+        result = Number(result).toFixed(app.decPlaces);
       } else if (result.includes('e')) {
         const i = result.indexOf('e');
         const n = Number(result.slice(0, i));
-        result = n.toFixed(4) + result.slice(i);
+        result = n.toFixed(app.decPlaces) + result.slice(i);
       }
 
       console.log(result);
